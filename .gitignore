@@ -1,0 +1,8 @@
+*.exe
+*.o
+*.obj
+
+# Ignore the build directory
+/build/
+
+.vscode/
