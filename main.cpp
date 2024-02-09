@@ -9,7 +9,7 @@ int main() {
     AccuracyScore accuracyScore;
     Dataset dataset(1);
     dataset.load("../DataExamples/classification_data.csv");
-    TrainTestSplit trainTestSplit(0.2, dataset);
+    TrainTestSplit trainTestSplit(0.2, dataset,42);
     Dataset trainDataset = trainTestSplit.getTrainDataset();
     Dataset testDataset = trainTestSplit.getTestDataset();
 
