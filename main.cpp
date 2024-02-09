@@ -3,6 +3,7 @@
 #include "Dataset.hpp"
 #include "AccuracyScore.hpp"
 #include "TrainTestSplit.hpp"
+#include "ModelSaver.hpp"
 
 int main() {
     AccuracyScore accuracyScore;
@@ -18,6 +19,12 @@ int main() {
     knn.fit(trainDataset.getFeatures(), trainDataset.getLabels());
     std::vector<std::vector<double>> predictions = knn.predict(testDataset.getFeatures());
     std::cout << "Accuracy: " << accuracyScore.calculate(predictions, testDataset.getLabels()) << std::endl;
+
+    // Save and reload model and recheck accuracy
+    Utils::ModelSaver::saveModel(knn, "knn_model");
+    Knn knnReloaded = Utils::ModelSaver::loadModel<Knn>("knn_model");
+    std::vector<std::vector<double>> predictionsReloaded = knnReloaded.predict(testDataset.getFeatures());
+    std::cout << "Accuracy reloaded: " << accuracyScore.calculate(predictionsReloaded, testDataset.getLabels()) << std::endl;
 
     std::cout << "Still works"<< std::endl;
 }

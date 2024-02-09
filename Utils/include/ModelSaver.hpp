@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 #include <boost/serialization/vector.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -37,5 +38,17 @@ namespace Utils {
             boost::archive::text_iarchive ia(ifs);
             ia >> model;
         }
+
+        template <typename T>
+        static T loadModel(const std::string& filename) {
+            T model;
+            std::ifstream ifs(filename);
+            boost::archive::text_iarchive ia(ifs);
+            ia >> model;
+            return model;
+        }
+        
     };
 }
+
+#endif

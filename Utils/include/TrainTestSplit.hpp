@@ -1,6 +1,7 @@
 #pragma once
 #include "Dataset.hpp"
 #include <optional>
+
 class TrainTestSplit {
 public:
     TrainTestSplit(double testSize, const Dataset& dataset);
