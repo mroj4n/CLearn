@@ -5,7 +5,60 @@
 
 Dataset::Dataset(int numLabels, bool headerExists, char delimiter) : numLabels(numLabels), headerExists(headerExists), delimiter(delimiter) {}
 
+Dataset::Dataset(int numLabels, std::vector<std::vector<double>> features, std::vector<std::vector<double>> labels,
+    std::vector<std::string> labelNames, std::vector<std::string> featureNames, bool headerExists, char delimiter) :
+    numLabels(numLabels), features(features), labels(labels), labelNames(labelNames), featureNames(featureNames), headerExists(headerExists), delimiter(delimiter) {}
+
 Dataset::~Dataset() {}
+
+Dataset::Dataset(const Dataset& dataset) {
+    numLabels = dataset.numLabels;
+    features = dataset.features;
+    labels = dataset.labels;
+    labelNames = dataset.labelNames;
+    featureNames = dataset.featureNames;
+    headerExists = dataset.headerExists;
+    delimiter = dataset.delimiter;
+}
+
+Dataset& Dataset::operator=(const Dataset& dataset) {
+    if (this == &dataset) {
+        return *this;
+    }
+    numLabels = dataset.numLabels;
+    features = dataset.features;
+    labels = dataset.labels;
+    labelNames = dataset.labelNames;
+    featureNames = dataset.featureNames;
+    headerExists = dataset.headerExists;
+    delimiter = dataset.delimiter;
+    return *this;
+}
+
+Dataset::Dataset(Dataset&& dataset) {
+    numLabels = dataset.numLabels;
+    features = std::move(dataset.features);
+    labels = std::move(dataset.labels);
+    labelNames = std::move(dataset.labelNames);
+    featureNames = std::move(dataset.featureNames);
+    headerExists = dataset.headerExists;
+    delimiter = dataset.delimiter;
+}
+
+Dataset& Dataset::operator=(Dataset&& dataset) {
+    if (this == &dataset) {
+        return *this;
+    }
+    numLabels = dataset.numLabels;
+    features = std::move(dataset.features);
+    labels = std::move(dataset.labels);
+    labelNames = std::move(dataset.labelNames);
+    featureNames = std::move(dataset.featureNames);
+    headerExists = dataset.headerExists;
+    delimiter = dataset.delimiter;
+    return *this;
+}
+
 
 // Assumes the data is in the format of features followed by labels
 // Feautre1, Feature2, ..., FeatureN, Label1, Label2, ..., LabelM
@@ -24,10 +77,12 @@ void Dataset::load(const std::string& filename) {
             if (numLabels > 0) {
                 if (labelNames.size() < numLabels) {
                     labelNames.push_back(token);
-                } else {
+                }
+                else {
                     featureNames.push_back(token);
                 }
-            } else {
+            }
+            else {
                 featureNames.push_back(token);
             }
         }
@@ -41,7 +96,8 @@ void Dataset::load(const std::string& filename) {
         while (std::getline(ss, token, delimiter)) {
             if (count < featureNames.size()) {
                 feature.push_back(std::stod(token));
-            } else {
+            }
+            else {
                 label.push_back(std::stod(token));
             }
             count++;
@@ -62,7 +118,8 @@ std::vector<std::vector<double>> Dataset::getLabels() const {
 std::vector<std::string> Dataset::getLabelNames() const {
     if (headerExists) {
         return labelNames;
-    } else {
+    }
+    else {
         //return empty vector
         return std::vector<std::string>();
     }
@@ -71,8 +128,22 @@ std::vector<std::string> Dataset::getLabelNames() const {
 std::vector<std::string> Dataset::getFeatureNames() const {
     if (headerExists) {
         return featureNames;
-    } else {
+    }
+    else {
         //return empty vector
         return std::vector<std::string>();
     }
 }
+
+int Dataset::getNumLabels() const {
+    return numLabels;
+}
+
+bool Dataset::getHeaderExists() const {
+    return headerExists;
+}
+
+char Dataset::getDelimiter() const {
+    return delimiter;
+}
+
