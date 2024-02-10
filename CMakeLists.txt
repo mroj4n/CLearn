@@ -13,8 +13,10 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_subdirectory(Metrics)
 add_subdirectory(Models)
 add_subdirectory(Utils)
+add_subdirectory(Validators)
+add_subdirectory(Helpers)
 # Add executable
 add_executable(${PROJECT_NAME} main.cpp)
 
 # Link libraries with the executable
-target_link_libraries(${PROJECT_NAME} Metrics Models Utils ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} Metrics Models Utils Helpers Validators ${Boost_LIBRARIES})

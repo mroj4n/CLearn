@@ -4,27 +4,13 @@
 #include "AccuracyScore.hpp"
 #include "TrainTestSplit.hpp"
 #include "ModelSaver.hpp"
+#include "KFold.hpp"
+
+#include "testing.hpp"
 
 int main() {
-    AccuracyScore accuracyScore;
-    Dataset dataset(1);
-    dataset.load("../DataExamples/classification_data.csv");
-    TrainTestSplit trainTestSplit(0.2, dataset,42);
-    Dataset trainDataset = trainTestSplit.getTrainDataset();
-    Dataset testDataset = trainTestSplit.getTestDataset();
+    // testingImplementations::testReloading();
+    testingImplementations::testKFold();
 
-    Knn knn(3);
-
-
-    knn.fit(trainDataset.getFeatures(), trainDataset.getLabels());
-    std::vector<std::vector<double>> predictions = knn.predict(testDataset.getFeatures());
-    std::cout << "Accuracy: " << accuracyScore.calculate(predictions, testDataset.getLabels()) << std::endl;
-
-    // Save and reload model and recheck accuracy
-    Utils::ModelSaver::saveModel(knn, "knn_model");
-    Knn knnReloaded = Utils::ModelSaver::loadModel<Knn>("knn_model");
-    std::vector<std::vector<double>> predictionsReloaded = knnReloaded.predict(testDataset.getFeatures());
-    std::cout << "Accuracy reloaded: " << accuracyScore.calculate(predictionsReloaded, testDataset.getLabels()) << std::endl;
-
-    std::cout << "Still works"<< std::endl;
+    std::cout << "Still works" << std::endl;
 }

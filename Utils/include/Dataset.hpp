@@ -23,6 +23,18 @@ public:
     int getNumLabels() const;
     bool getHeaderExists() const;
     char getDelimiter() const;
+
+    // Serialize function for boost
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version) {
+        ar& features;
+        ar& labels;
+        ar& labelNames;
+        ar& featureNames;
+        ar& numLabels;
+        ar& headerExists;
+        ar& delimiter;
+    }
 private:
     std::vector<std::vector<double>> features;
     std::vector<std::vector<double>> labels;

@@ -59,10 +59,8 @@ Dataset& Dataset::operator=(Dataset&& dataset) {
     return *this;
 }
 
-
 // Assumes the data is in the format of features followed by labels
 // Feautre1, Feature2, ..., FeatureN, Label1, Label2, ..., LabelM
-
 void Dataset::load(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
