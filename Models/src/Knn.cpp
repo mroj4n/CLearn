@@ -13,6 +13,11 @@ void Knn::fit(const std::vector<std::vector<double>>& features, const std::vecto
     this->labels = labels;
 }
 
+void Knn::partialFit(const std::vector<std::vector<double>>& features, const std::vector<std::vector<double>>& labels) {
+    this->features.insert(this->features.end(), features.begin(), features.end());
+    this->labels.insert(this->labels.end(), labels.begin(), labels.end());
+}
+
 std::vector<std::vector<double>> Knn::predict(const std::vector<std::vector<double>>& queryData) const {
     std::vector<std::vector<double>> predictions;
     for (const auto& query : queryData) {
