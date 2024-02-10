@@ -28,6 +28,33 @@ std::vector<std::vector<double>> Knn::predict(const std::vector<std::vector<doub
     return predictions;
 }
 
+
+std::vector<std::map<double, double>> Knn::predictProba(const std::vector<std::vector<double>>& queryData) const {
+    // ToDo: Confirm if this is the correct implementation
+    std::vector<std::map<double, double>> predictions;
+    for (const auto& query : queryData) {
+        std::vector<double> distances = getSortedEuclideanDistances(query);
+
+        std::map<double, int> labelCounts;
+
+        for (int i = 0; i < k && i < distances.size(); i++) {
+
+            double label = labels[i][0]; // Simplified; might need adjustments 
+            labelCounts[label]++;
+        }
+        // Convert counts to probabilities by dividing by k
+        std::map<double, double> labelProbabilities;
+        for (const auto& labelCount : labelCounts) {
+            labelProbabilities[labelCount.first] = static_cast<double>(labelCount.second) / k;
+        }
+
+        predictions.push_back(labelProbabilities);
+    }
+
+    return predictions;
+}
+
+
 std::vector<double> Knn::getSortedEuclideanDistances(const std::vector<double>& queryData) const {
     std::vector<double> distances;
     for (const auto& feature : features) {

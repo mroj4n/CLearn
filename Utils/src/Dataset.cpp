@@ -2,12 +2,15 @@
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
-
-Dataset::Dataset(int numLabels, bool headerExists, char delimiter) : numLabels(numLabels), headerExists(headerExists), delimiter(delimiter) {}
+#include <algorithm>
+Dataset::Dataset(int numLabels, bool headerExists, char delimiter) : numLabels(numLabels), headerExists(headerExists), delimiter(delimiter) {
+    setNumberOfUniqueClasses();
+}
 
 Dataset::Dataset(int numLabels, std::vector<std::vector<double>> features, std::vector<std::vector<double>> labels,
-    std::vector<std::string> labelNames, std::vector<std::string> featureNames, bool headerExists, char delimiter) :
-    numLabels(numLabels), features(features), labels(labels), labelNames(labelNames), featureNames(featureNames), headerExists(headerExists), delimiter(delimiter) {}
+    std::vector<std::string> labelNames, std::vector<std::string> featureNames, uint16_t numOfClasses, bool headerExists, char delimiter) :
+    numLabels(numLabels), features(features), labels(labels), labelNames(labelNames), featureNames(featureNames), headerExists(headerExists), delimiter(delimiter), numOfClasses(numOfClasses) {
+    }
 
 Dataset::~Dataset() {}
 
@@ -19,6 +22,7 @@ Dataset::Dataset(const Dataset& dataset) {
     featureNames = dataset.featureNames;
     headerExists = dataset.headerExists;
     delimiter = dataset.delimiter;
+    numOfClasses = dataset.numOfClasses;
 }
 
 Dataset& Dataset::operator=(const Dataset& dataset) {
@@ -32,6 +36,7 @@ Dataset& Dataset::operator=(const Dataset& dataset) {
     featureNames = dataset.featureNames;
     headerExists = dataset.headerExists;
     delimiter = dataset.delimiter;
+    numOfClasses = dataset.numOfClasses;
     return *this;
 }
 
@@ -43,6 +48,7 @@ Dataset::Dataset(Dataset&& dataset) {
     featureNames = std::move(dataset.featureNames);
     headerExists = dataset.headerExists;
     delimiter = dataset.delimiter;
+    numOfClasses = dataset.numOfClasses;
 }
 
 Dataset& Dataset::operator=(Dataset&& dataset) {
@@ -56,6 +62,7 @@ Dataset& Dataset::operator=(Dataset&& dataset) {
     featureNames = std::move(dataset.featureNames);
     headerExists = dataset.headerExists;
     delimiter = dataset.delimiter;
+    numOfClasses = dataset.numOfClasses;
     return *this;
 }
 
@@ -103,6 +110,20 @@ void Dataset::load(const std::string& filename) {
         features.push_back(feature);
         labels.push_back(label);
     }
+}
+
+void Dataset::setNumberOfUniqueClasses() {
+    std::vector<double> uniqueClasses;
+    for (const auto& label : labels) {
+        if (std::find(uniqueClasses.begin(), uniqueClasses.end(), label[0]) == uniqueClasses.end()) {
+            uniqueClasses.push_back(label[0]);
+        }
+    }
+    numOfClasses = uniqueClasses.size();
+}
+
+uint16_t Dataset::getNumberOfUniqueClasses() const {
+    return numOfClasses;
 }
 
 std::vector<std::vector<double>> Dataset::getFeatures() const {

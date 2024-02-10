@@ -47,7 +47,7 @@ std::vector<std::vector<uint16_t>> KFold::getIndices() const
     return indicesForEachFold;
 }
 
-std::vector<std::pair<Dataset,Dataset>> KFold::getDatasetsForEachFold() const
+std::vector<std::pair<Dataset, Dataset>> KFold::getDatasetsForEachFold() const
 {
     std::vector<std::pair<Dataset, Dataset>> datasets;
     for (uint16_t i = 0; i < indicesForEachFold.size(); i++)
@@ -77,8 +77,8 @@ std::vector<std::pair<Dataset,Dataset>> KFold::getDatasetsForEachFold() const
                 }
             }
         }
-        Dataset trainDataset(dataset.getNumLabels(), trainFeatures, trainLabels, labelNames, featureNames, dataset.getHeaderExists(), dataset.getDelimiter());
-        Dataset testDataset(dataset.getNumLabels(), testFeatures, testLabels, labelNames, featureNames, dataset.getHeaderExists(), dataset.getDelimiter());
+        Dataset trainDataset(dataset.getNumLabels(), trainFeatures, trainLabels, labelNames, featureNames, dataset.getNumberOfUniqueClasses(), dataset.getHeaderExists(), dataset.getDelimiter());
+        Dataset testDataset(dataset.getNumLabels(), testFeatures, testLabels, labelNames, featureNames, dataset.getNumberOfUniqueClasses(), dataset.getHeaderExists(), dataset.getDelimiter());
         datasets.push_back(std::make_pair(trainDataset, testDataset));
     }
     return datasets;

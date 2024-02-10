@@ -5,7 +5,7 @@
 #include "TrainTestSplit.hpp"
 #include "ModelSaver.hpp"
 #include "KFold.hpp"
-
+#include "GaussianNB.hpp"
 #include "testing.hpp"
 
 int main() {

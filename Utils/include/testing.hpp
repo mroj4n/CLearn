@@ -1,5 +1,6 @@
 #pragma once
 #include "Knn.hpp"
+#include "GaussianNB.hpp"
 #include "Dataset.hpp"
 #include "AccuracyScore.hpp"
 #include "TrainTestSplit.hpp"
@@ -10,17 +11,21 @@ namespace testingImplementations {
 double doKnnGetAccuracy(Dataset trainDataset, Dataset testDataset)
 {
     AccuracyScore accuracyScore;
-    Knn knn(3);
+    // Knn knn(3);
 
-    knn.fit(trainDataset.getFeatures(), trainDataset.getLabels());
-    std::vector<std::vector<double>> predictions = knn.predict(testDataset.getFeatures());
+    // knn.fit(trainDataset.getFeatures(), trainDataset.getLabels());
+    // std::vector<std::vector<double>> predictions = knn.predict(testDataset.getFeatures());
+
+    GaussianNB gaussianNB;
+    gaussianNB.fit(trainDataset.getFeatures(), trainDataset.getLabels());
+    std::vector<std::vector<double>> predictions = gaussianNB.predict(testDataset.getFeatures());
     return accuracyScore.calculate(predictions, testDataset.getLabels());
 }
 
 void testKFold()
 {
     Dataset dataset(1);
-    dataset.load("../DataExamples/easy_data.csv");
+    dataset.load("../DataExamples/classification_data.csv");
 
     KFold kFold(dataset, 3);
     std::vector<std::pair<Dataset, Dataset>> datasetsSplitted2 = kFold.getDatasetsForEachFold();

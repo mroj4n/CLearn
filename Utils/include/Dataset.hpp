@@ -1,13 +1,13 @@
 #pragma once
 #include <vector>
 #include <string>
-
+#include <cstdint>
 class Dataset {
 public:
     Dataset(int numLabels, bool headerExists = true, char delimiter = ',');
     Dataset(int numLabels, std::vector<std::vector<double>> features,
-        std::vector<std::vector<double>> labels, std::vector<std::string> labelNames, std::vector<std::string> featureNames, bool headerExists = true, char delimiter = ',');
-    
+        std::vector<std::vector<double>> labels, std::vector<std::string> labelNames, std::vector<std::string> featureNames, uint16_t numOfClasses, bool headerExists = true, char delimiter = ',');
+
     ~Dataset();
     Dataset(const Dataset& dataset);
     Dataset& operator=(const Dataset& dataset);
@@ -23,7 +23,7 @@ public:
     int getNumLabels() const;
     bool getHeaderExists() const;
     char getDelimiter() const;
-
+    uint16_t getNumberOfUniqueClasses() const;
     // Serialize function for boost
     template<class Archive>
     void serialize(Archive& ar, const unsigned int version) {
@@ -43,4 +43,7 @@ private:
     int numLabels;
     bool headerExists;
     char delimiter;
+    uint16_t numOfClasses;
+
+    void setNumberOfUniqueClasses();
 };
