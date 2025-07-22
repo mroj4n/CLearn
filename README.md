@@ -1,4 +1,4 @@
-Sklearn machine learning models implementation in C++ (OOP)
+Machine learning models implementation using *OOP* principles in C++ 
 
 
 Sample code usage: 
